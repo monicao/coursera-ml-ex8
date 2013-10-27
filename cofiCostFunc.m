@@ -44,7 +44,13 @@ for i = 1:num_movies
   for j = 1:num_users
     if R(i, j) == 1
       J += (1 / 2) * (Theta(j, :) * X(i, :)' - Y(i, j)) ^ 2;
+
+      X_grad(i, :)      += (Theta(j, :) * X(i, :)' - Y(i, j)) * Theta(j, :);
+      Theta_grad(j, :)  += (Theta(j, :) * X(i, :)' - Y(i, j)) * X(i, :);
     end
+    
+    reg_parameter = (lambda / 2) * sum(Theta(j, :) .^ 2) + (lambda / 2) * sum(X(i, :) .^ 2);
+    J += reg_parameter;
   end
 end
 
